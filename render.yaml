@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: ai-job-intelligence
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: jobintel-db
+          property: connectionString
+      - key: SPRING_JPA_PLATFORM
+        value: org.hibernate.dialect.PostgreSQLDialect
+      - key: JWT_SECRET
+        generateValue: true
+      - key: GEMINI_API_KEY
+        sync: false
+
+databases:
+  - name: jobintel-db
+    plan: free
+    databaseName: jobinteldb
+    user: postgres
